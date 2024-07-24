@@ -30,6 +30,7 @@ This can be useful for debugging and testing, you may think of it as a more comp
 - Fully handles unexported fields, types, and values (optional.)
 - Strong emphasis on being used for producing valid Go code that can be copy & pasted directly into e.g. tests.
 - [Extensively tested](https://github.com/hexops/valast/tree/main/testdata), over 88 tests and handling numerous edge cases (such as pointers to unaddressable literal values like `&"foo"` properly, and even [finding bugs in alternative packages'](https://github.com/shurcooL/go-goon/issues/15)).
+- Provide custom AST representations for your types with `customtypes.Register(...)`.
 
 ## Alternatives comparison
 

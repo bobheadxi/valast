@@ -5,8 +5,6 @@ import (
 	"go/ast"
 	"go/token"
 	"time"
-
-	"github.com/hexops/valast/customtype"
 )
 
 // Register custom reprsentations of common structs from stdlib that only
@@ -15,7 +13,7 @@ func init() {
 	// For time.Time, returns the AST expression equivalent of:
 	//
 	//	time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
-	customtype.Register(func(t time.Time) ast.Expr {
+	RegisterType(func(t time.Time) ast.Expr {
 		return &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
 				X:   &ast.Ident{Name: "time"},

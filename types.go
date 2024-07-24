@@ -5,7 +5,21 @@ import (
 	"go/ast"
 	"go/token"
 	"reflect"
+
+	"github.com/hexops/valast/internal/customtype"
 )
+
+// RegisterType registers a type that for representation in a custom manner with
+// valast. If valast encounters a value or pointer to a value of this type, it
+// will use the given render func to generate the appropriate AST representation.
+//
+// This is useful if a type's fields are private, and can only be represented
+// through a constructor - see stdtypes.go for examples.
+//
+// This mechanism currently only works with struct types.
+func RegisterType[T any](render func(value T) ast.Expr) {
+	customtype.Register(render)
+}
 
 type cacheKeyOptions struct {
 	Unqualify    bool

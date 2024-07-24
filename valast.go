@@ -15,8 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hexops/valast/customtype"
 	"github.com/hexops/valast/internal/bypass"
+	"github.com/hexops/valast/internal/customtype"
 	"golang.org/x/tools/go/packages"
 	gofumpt "mvdan.cc/gofumpt/format"
 )

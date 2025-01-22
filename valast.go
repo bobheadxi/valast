@@ -566,6 +566,12 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 				OmittedUnexported:  elem.OmittedUnexported,
 			}, nil
 		}
+		// Wrap custom type representations in generic pointer.
+		if _, ok := customtype.Is(vv.Elem().Type()); ok {
+			return Result{
+				AST: pointifyASTExpr(elem.AST),
+			}, nil
+		}
 		return Result{
 			AST: &ast.UnaryExpr{
 				Op: token.AND,

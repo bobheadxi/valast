@@ -311,6 +311,7 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 
 	vv := unexported(v)
 	packagesFound[vv.Type().PkgPath()] = true
+
 	switch vv.Kind() {
 	case reflect.Bool:
 		boolType, err := typeExpr(vv.Type(), opt, typeExprCache)
@@ -361,6 +362,12 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 	case reflect.Complex128:
 		return basicLit(vv, token.FLOAT, "complex128", v, opt, typeExprCache)
 	case reflect.Array:
+		if render, ok := customtype.Is(v.Type()); ok {
+			return Result{
+				AST: render(v.Interface()),
+			}, nil
+		}
+
 		var (
 			elts               []ast.Expr
 			requiresUnexported bool
@@ -558,12 +565,6 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 				},
 				RequiresUnexported: ptrType.RequiresUnexported || elem.RequiresUnexported,
 				OmittedUnexported:  elem.OmittedUnexported,
-			}, nil
-		}
-		// Wrap custom type representations in generic pointer.
-		if _, ok := customtype.Is(vv.Elem().Type()); ok {
-			return Result{
-				AST: pointifyASTExpr(elem.AST),
 			}, nil
 		}
 		return Result{

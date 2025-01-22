@@ -361,6 +361,12 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 	case reflect.Complex128:
 		return basicLit(vv, token.FLOAT, "complex128", v, opt, typeExprCache)
 	case reflect.Array:
+		if render, ok := customtype.Is(v.Type()); ok {
+			return Result{
+				AST: render(v.Interface()),
+			}, nil
+		}
+
 		var (
 			elts               []ast.Expr
 			requiresUnexported bool

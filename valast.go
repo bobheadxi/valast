@@ -311,7 +311,6 @@ func computeAST(v reflect.Value, opt *Options, cycleDetector *cycleDetector, pro
 
 	vv := unexported(v)
 	packagesFound[vv.Type().PkgPath()] = true
-
 	switch vv.Kind() {
 	case reflect.Bool:
 		boolType, err := typeExpr(vv.Type(), opt, typeExprCache)
